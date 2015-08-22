@@ -56,7 +56,6 @@ public class Home extends AppCompatActivity implements OnUpdateProfileListner {
 
         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.primary));
         slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.icons));
-slidingTabLayout.s
 
 
         slidingTabLayout.setViewPager(viewPager);
@@ -97,13 +96,20 @@ slidingTabLayout.s
     }
 
 
-    class MyTabAdapter extends FragmentStatePagerAdapter {
+    public class MyTabAdapter extends FragmentStatePagerAdapter {
 
-
+        int[] imageResId = {
+                R.drawable.first_tab,
+                R.drawable.second_tab,
+                R.drawable.third_tab,
+                R.drawable.fourth_tab,
+                R.drawable.fifth_tab
+        };
         public MyTabAdapter(FragmentManager fm) {
             super(fm);
             //tabs = getResources().getStringArray(R.array.tabs);
         }
+
 
         @Override
         public Fragment getItem(int position) {
@@ -136,23 +142,24 @@ slidingTabLayout.s
 
         @Override
         public CharSequence getPageTitle(int position) {
-            int[] imageResId = {
-                    R.drawable.home,
-                    R.drawable.group,
-                    R.drawable.list1,
-                    R.drawable.profile,
-                    R.drawable.nav
-            };
 
+/*
             Drawable image = getResources().getDrawable(imageResId[position]);
             image.setBounds(0, 0, 36, 36);
             SpannableString sb = new SpannableString(" ");
             ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
             sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             return sb;
+*/
+            return null;
 
 
         }
+
+        public int getDrawableId(int position) {
+            return imageResId[position];
+        }
+
 
         @Override
         public int getCount() {

@@ -55,7 +55,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="16dp"
-                android:src="@drawable/down" />
+                android:src="@drawable/ic_keyboard_arrow_down_black_36dp"
+                android:background="#00000000"
+                />
         </RelativeLayout>
 
 

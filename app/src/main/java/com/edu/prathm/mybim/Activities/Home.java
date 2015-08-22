@@ -49,9 +49,10 @@ public class Home extends AppCompatActivity implements OnUpdateProfileListner {
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new MyTabAdapter(getSupportFragmentManager()));
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.tab);
-        slidingTabLayout.setDistributeEvenly(true);
-        slidingTabLayout.setCustomTabView(R.layout.custom_tab, R.id.tabText);
 
+        //slidingTabLayout.setDistributeEvenly(true);
+       // slidingTabLayout.setCustomTabView(R.layout.custom_tab,0);
+        //slidingTabLayout.setCustomTabView(R.layout.custom_tab, R.id.tabText);
         //slidingTabLayout.setSelectedIndicatorColors(R.color.primary);
 
         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.primary));

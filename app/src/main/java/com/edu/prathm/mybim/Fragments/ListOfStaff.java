@@ -14,7 +14,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.edu.prathm.mybim.R;
+import com.edu.prathm.mybim.network.VollySingleton;
 import com.edu.prathm.mybim.pojo.StaffMember;
 
 import java.util.ArrayList;
@@ -27,8 +30,10 @@ import java.util.ArrayList;
  */
 public class ListOfStaff extends ListFragment {
     MyStaffAdapter myStaffAdapter;
+    ImageLoader mImageLoader;
     ArrayList<StaffMember> allstaff;
     private Toolbar toolbar;
+
 
     public ListOfStaff() {
         // Required empty public constructor
@@ -40,7 +45,7 @@ public class ListOfStaff extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_list_of_staff, container, false);
-
+mImageLoader= VollySingleton.getInstance().getImageLoader();
         return v;
     }
 
@@ -56,11 +61,11 @@ allstaff = new ArrayList<StaffMember>();
 
     public void getStaffObjects() {
         StaffMember m = new StaffMember();
-        m.setStaff_avatarUrl("ggggggggggggg");
-        m.setStaff_name("hiiiiiiiiiiiii");
+        m.setStaff_avatarUrl("http://a5.files.biography.com/image/upload/c_fill,cs_srgb,dpr_1.0,g_face,h_300,q_80,w_300/MTE5NDg0MDU0OTM2NTg1NzQz.jpg");
+        m.setStaff_name("tom cruise");
         StaffMember m2 = new StaffMember();
-        m2.setStaff_avatarUrl("ggggggggggggg");
-        m2.setStaff_name("hiiiiiiiiiiiii");
+        m2.setStaff_avatarUrl("https://40.media.tumblr.com/539758b0d9ae7247468f7fd2edab904a/tumblr_n2yksxcApl1t0eow1o1_500.jpg");
+        m2.setStaff_name("robert downy jr");
 
         allstaff.add(m);
         allstaff.add(m2);
@@ -82,7 +87,7 @@ allstaff = new ArrayList<StaffMember>();
     class MyStaffAdapter extends BaseAdapter {
         ArrayList<StaffMember> allStaff;
         Context context;
-        ImageView avatar;
+        NetworkImageView avatar;
         TextView member;
 
         public MyStaffAdapter(Context context, ArrayList<StaffMember> allStaff) {
@@ -114,10 +119,11 @@ allstaff = new ArrayList<StaffMember>();
                 convertView = inflater.inflate(R.layout.listofstaff, null);
 
             }
-            avatar = (ImageView) convertView.findViewById(R.id.avatar);
+            avatar = (NetworkImageView) convertView.findViewById(R.id.avatar);
             member = (TextView) convertView.findViewById(R.id.member);
             StaffMember currentStaffMember = allStaff.get(position);
             member.setText(currentStaffMember.getStaff_name());
+            avatar.setImageUrl(currentStaffMember.getStaff_avatarUrl(), mImageLoader);
             return convertView;
         }
     }

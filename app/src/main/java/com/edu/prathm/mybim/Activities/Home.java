@@ -53,7 +53,6 @@ public class Home extends AppCompatActivity implements OnUpdateProfileListner {
         //slidingTabLayout.setDistributeEvenly(true);
        // slidingTabLayout.setCustomTabView(R.layout.custom_tab,0);
         //slidingTabLayout.setCustomTabView(R.layout.custom_tab, R.id.tabText);
-        //slidingTabLayout.setSelectedIndicatorColors(R.color.primary);
 
         slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.primary));
         slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.icons));

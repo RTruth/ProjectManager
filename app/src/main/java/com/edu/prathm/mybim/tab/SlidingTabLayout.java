@@ -71,6 +71,8 @@ import android.widget.TextView;
  * providing the layout ID of your custom layout.
  */
 import com.edu.prathm.mybim.Activities.Home.*;
+import com.edu.prathm.mybim.extra.L;
+
 public class SlidingTabLayout extends HorizontalScrollView {
     /**
      * Allows complete control over the colors drawn in the tab layout. Set with
@@ -210,7 +212,8 @@ public class SlidingTabLayout extends HorizontalScrollView {
         ImageView imageView = new ImageView(context);
 
         int padding = (int) (TAB_VIEW_PADDING_DIPS * getResources().getDisplayMetrics().density);
-        imageView.setPadding(padding, padding, padding, padding);
+        
+        imageView.setPadding(12, 12, padding, padding);
 
         int width = (int) (getResources().getDisplayMetrics().widthPixels / mViewPager.getAdapter().getCount());
         imageView.setMinimumWidth(width);

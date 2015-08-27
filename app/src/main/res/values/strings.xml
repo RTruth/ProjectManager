@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MyBIM</string>
 
+    <string name="app_name">MyBIM</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
@@ -12,5 +13,6 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_commnt">Commnt</string>
+    <string name="title_activity_project__description">Project_Description</string>
 
 </resources>

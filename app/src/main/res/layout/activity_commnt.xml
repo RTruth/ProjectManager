@@ -11,11 +11,11 @@
     layout="@layout/app_bar"
     />
 
-    <ListView
-        android:id="@+id/list"
+    <ExpandableListView
+        android:id="@+id/elist"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"></ListView>
+        android:layout_weight="1"></ExpandableListView>
 
     <LinearLayout
 android:layout_marginLeft="16dp"
@@ -26,6 +26,7 @@ android:layout_marginLeft="16dp"
         android:orientation="horizontal">
 
         <EditText
+            android:id="@+id/commentField"
             android:textColor="@color/secondary_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -34,7 +35,7 @@ android:layout_marginLeft="16dp"
 
         <Button
             android:layout_gravity="bottom"
-            android:id="@+id/btn"
+            android:id="@+id/addbtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"

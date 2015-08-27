@@ -21,6 +21,16 @@ public interface key {
     public static final String KEY_FALSE = "false";
     public static final String KEY_USER_IS_LOGIN = "isLogin";
     public static final String CONSTANT_NA = "NA";
+    public static final String KEY_PROJECTS = "projects";
+    public static final String KEY_PROJECT_ID = "id";
+    public static final String KEY_U_ID = "user_id";
+    public static final String KEY_TEAM_ID = "team_id";
+    public static final String KEY_PROJECT_NAME = "project_name";
+    public static final String KEY_START_DATE = "start_date";
+    public static final String KEY_END_DATE = "end_date";
+    public static final String KEY_PROJECT_OWNER = "project_owner";
+
+
 
 
 }

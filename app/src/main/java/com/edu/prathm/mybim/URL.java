@@ -8,5 +8,5 @@ public interface URL {
 
     public static  final String MAIN_URL = "http://pupus.web44.net/" ;
     public static  final String LOGIN_URL = MAIN_URL+"signin_test.php" ;
-
+    public static  final String Get_Project_URL = MAIN_URL+"getProjects.php" ;
 }

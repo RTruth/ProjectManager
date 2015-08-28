@@ -71,7 +71,7 @@ public class Profile extends Fragment {
         SharedPreferences sharedpreferences = getActivity().getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
         String firstName = sharedpreferences.getString(KEY_USER_FIRSTNAME, null);
         String lastName = sharedpreferences.getString(KEY_USER_LASTNAME, null);
-        String id = ""+sharedpreferences.getInt(KEY_USER_ID,-1);
+        String id = sharedpreferences.getString(KEY_USER_ID,null);
         String role = sharedpreferences.getString(KEY_USER_ROLE, null);
         //String department = sharedpreferences.getString(KEY_USER_, null);
         String dob = sharedpreferences.getString(KEY_USER_DATE_OF_BIRTH, null);

@@ -82,6 +82,7 @@ public class ListOfProjects extends ListFragment {
     public ListOfProjects() {
         // Required empty public constructor
     }
+
     public static String getRequestUrl(String userid) {
         //return MAIN_URL;
         return Get_Project_URL + "?user_id=" + userid;
@@ -99,7 +100,7 @@ public class ListOfProjects extends ListFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_of_projects, container, false);
-         requestQueue=VollySingleton.getInstance().getRequestQueue();
+        requestQueue = VollySingleton.getInstance().getRequestQueue();
 
 
         return view;
@@ -121,13 +122,13 @@ public class ListOfProjects extends ListFragment {
 
         inflater.inflate(R.menu.menu_list_of_project, menu);
 
-        SearchManager searchManager= (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchToolbarItem = menu.findItem(R.id.action_search);
         SearchView searchView;
         searchView = (SearchView) MenuItemCompat.getActionView(searchToolbarItem);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-     searchView.setIconifiedByDefault(true);
-        }
+        searchView.setIconifiedByDefault(true);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -146,7 +147,8 @@ public class ListOfProjects extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         projects = new ArrayList<Project>();
-     getProjectsObjects();
+        getProjectsObjects();
+
         myProjectAdapter = new MyProjectAdapter(getActivity(), projects);
         setListAdapter(myProjectAdapter);
 
@@ -157,17 +159,16 @@ public class ListOfProjects extends ListFragment {
         /*(String[] projectname = {"java project", "Php project", "html project", "css project"};
         String[] P_by = {"prayhm", "Raj", "mahesh", "hasid"};*/
 
-        JsonObjectRequest projectRequest=new JsonObjectRequest(Request.Method.GET,
-                getRequestUrl(getEntryOfSharedPreference(getActivity(), key.KEY_USER_ID)), new Response.Listener<JSONObject>() {
+        JsonObjectRequest projectRequest = new JsonObjectRequest(Request.Method.GET,
+                getRequestUrl(getEntryOfSharedPreference(getActivity(), KEY_USER_ID)), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-if(parsejason(response))
-{
-Toast.makeText(getActivity(),"Everything went fine",Toast.LENGTH_LONG).show();
-}
+                if (parsejason(response)) {
+                    Toast.makeText(getActivity(), "Everything went fine", Toast.LENGTH_LONG).show();
+                }
 
             }
-        },new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
@@ -179,7 +180,8 @@ Toast.makeText(getActivity(),"Everything went fine",Toast.LENGTH_LONG).show();
     }
 
     private boolean parsejason(JSONObject response) {
-        boolean isValid=false;
+        boolean isValid = false;
+        int j=0;
         try {
             //String user = response.getString("user");
             String success = "false";
@@ -194,24 +196,27 @@ Toast.makeText(getActivity(),"Everything went fine",Toast.LENGTH_LONG).show();
 
 
                 if (response.has(KEY_PROJECTS)) {
-                    JSONObject project = null;
-                    JSONArray ProjArray = response.getJSONArray("project");
+
+                    JSONArray ProjArray = response.getJSONArray(KEY_PROJECTS);
                     for (int i = 0; i < ProjArray.length(); i++) {
-                        project = ProjArray.getJSONObject(i);
+                        JSONObject project = ProjArray.getJSONObject(i);
 
                         Project p = new Project();
 
                         if (project.has(KEY_PROJECT_ID)) {
                             String id = project.getString(KEY_PROJECT_ID);
                             p.setP_id(id);
+
                         }
                         if (project.has(KEY_U_ID)) {
                             String u_id = project.getString(KEY_U_ID);
                             p.setU_id(u_id);
+
                         }
                         if (project.has(KEY_PROJECT_NAME)) {
                             String pname = project.getString(KEY_PROJECT_NAME);
                             p.setProject_name(pname);
+
                         }
                         if (project.has(KEY_TEAM_ID)) {
                             String team = project.getString(KEY_TEAM_ID);
@@ -256,9 +261,9 @@ Toast.makeText(getActivity(),"Everything went fine",Toast.LENGTH_LONG).show();
                         }
 
 
-
                         isValid = true;
-                        projects.add(p);
+                        projects.add(j++,p);
+
 
                     }
 
@@ -275,20 +280,28 @@ Toast.makeText(getActivity(),"Everything went fine",Toast.LENGTH_LONG).show();
         return isValid;
     }
 
-    }
+
 // TODO: Rename method, update argument and hook method into UI event
 
 
     class MyProjectAdapter extends BaseAdapter {
         ArrayList<Project> projects;
         Context context;
-        TextView pro_name;
-        TextView pro_by;
+
+
+            TextView pro_name;
+            TextView pro_by;
+
+
+
 
         public MyProjectAdapter(Context context, ArrayList<Project> projects) {
             this.context = context;
             this.projects = projects;
+
+
         }
+
 
         @Override
         public int getCount() {
@@ -308,23 +321,29 @@ Toast.makeText(getActivity(),"Everything went fine",Toast.LENGTH_LONG).show();
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.projectlistitem, null);
 
+
+
+                pro_name = (TextView) convertView.findViewById(R.id.project_name);
+               pro_by = (TextView) convertView.findViewById(R.id.project_by);
+
+
+            }
+            Project currentProject = projects.get(position);
+            if (currentProject != null) {
+                // get the TextView from the ViewHolder and then set the text (item name) and tag (item ID) values
+               pro_name.setText(currentProject.getProject_name());
+                pro_by.setText(currentProject.getU_id());
             }
 
-
-            pro_name = (TextView) convertView.findViewById(R.id.project_name);
-            pro_by = (TextView) convertView.findViewById(R.id.project_by);
-
-            Project currentProject = projects.get(position);
-            pro_name.setText(currentProject.getProject_name()); //
-            pro_by.setText(currentProject.getProject_owner()); //;
 
             return convertView;
         }
     }
 
 
-
+}

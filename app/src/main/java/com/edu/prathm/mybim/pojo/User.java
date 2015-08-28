@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by Prathm on 8/20/2015.
  */
 public class User {
-    private int id;
+    private String id;
     private String firstname;
     private String lastname;
     private String role;
@@ -25,11 +25,11 @@ private  String gender;
         this.gender = gender;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -179,7 +179,7 @@ public class Login extends AppCompatActivity {
 
                     if (user.has(KEY_USER_ID)) {
                         String id = user.getString(KEY_USER_ID);
-                        s.setId(Integer.parseInt(id));
+                        s.setId(id);
                     }
                     if (user.has(KEY_USER_FIRSTNAME)) {
                         String firstname = user.getString(KEY_USER_FIRSTNAME);
@@ -256,7 +256,7 @@ public class Login extends AppCompatActivity {
         editor.putString(KEY_USER_IS_LOGIN, KEY_TRUE);
 
 
-        editor.putInt(KEY_USER_ID, s.getId());
+        editor.putString(KEY_USER_ID, s.getId());
         editor.putString(KEY_USER_FIRSTNAME, s.getFirstname());
         editor.putString(KEY_USER_LASTNAME, s.getLastname());
         editor.putString(KEY_USER_EMAIL, s.getEmail());

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.edu.prathm.mybim.R;
 
@@ -25,6 +26,7 @@ public class SplashActivity extends AppCompatActivity {
                     Thread.sleep(2000);
 
                     String loginValue = getEntryOfSharedPreference(SplashActivity.this, "isLogin");
+
                     if (loginValue != null) {
                         Boolean isLogin = Boolean.valueOf(loginValue);
                         if (isLogin) {

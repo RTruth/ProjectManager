@@ -33,7 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
         SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
         firstName = sharedpreferences.getString(KEY_USER_FIRSTNAME, null);
          lastName = sharedpreferences.getString(KEY_USER_LASTNAME, null);
-         id = ""+sharedpreferences.getInt(KEY_USER_ID,-1);
+         id = sharedpreferences.getString(KEY_USER_ID,null);
 
 
 

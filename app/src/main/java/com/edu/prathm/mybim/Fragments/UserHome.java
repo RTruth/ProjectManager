@@ -16,13 +16,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.edu.prathm.mybim.Activities.CommentActivity;
+import com.edu.prathm.mybim.Activities.SplashActivity;
 import com.edu.prathm.mybim.R;
 
 import android.support.v4.app.Fragment;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import static com.edu.prathm.mybim.extra.FileOperator.getEntryOfSharedPreference;
 import static com.edu.prathm.mybim.extra.key.*;
 
 public class UserHome extends Fragment {
@@ -53,6 +56,7 @@ Button commentButton;
         View v = inflater.inflate(R.layout.fragment_user_home, container, false);
         name2 = (TextView) v.findViewById(R.id.name2);
         date_place = (TextView) v.findViewById(R.id.date_place);
+
 commentButton = (Button) v.findViewById(R.id.commentButton);
         SharedPreferences sharedpreferences = getActivity().getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
         String firstName = sharedpreferences.getString(KEY_USER_FIRSTNAME, null);

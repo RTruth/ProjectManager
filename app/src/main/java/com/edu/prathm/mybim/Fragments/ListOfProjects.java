@@ -3,6 +3,7 @@ package com.edu.prathm.mybim.Fragments;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.edu.prathm.mybim.Activities.Login;
+import com.edu.prathm.mybim.Activities.Project_Description;
 import com.edu.prathm.mybim.R;
 import com.edu.prathm.mybim.extra.L;
 import com.edu.prathm.mybim.extra.key;
@@ -51,6 +54,7 @@ import static com.edu.prathm.mybim.extra.FileOperator.getEntryOfSharedPreference
 import static com.edu.prathm.mybim.extra.key.KEY_END_DATE;
 import static com.edu.prathm.mybim.extra.key.KEY_FALSE;
 import static com.edu.prathm.mybim.extra.key.KEY_PROJECTS;
+import static com.edu.prathm.mybim.extra.key.KEY_PROJECT_DESCRIPTION;
 import static com.edu.prathm.mybim.extra.key.KEY_PROJECT_ID;
 import static com.edu.prathm.mybim.extra.key.KEY_PROJECT_NAME;
 import static com.edu.prathm.mybim.extra.key.KEY_PROJECT_OWNER;
@@ -73,11 +77,11 @@ import static com.edu.prathm.mybim.extra.key.KEY_U_ID;
 
 
 public class ListOfProjects extends ListFragment {
-
+    ArrayList<Project> projects;
     private RequestQueue requestQueue;
     MyProjectAdapter myProjectAdapter;
     private Toolbar toolbar;
-    ArrayList<Project> projects;
+
 
     public ListOfProjects() {
         // Required empty public constructor
@@ -101,7 +105,7 @@ public class ListOfProjects extends ListFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_of_projects, container, false);
         requestQueue = VollySingleton.getInstance().getRequestQueue();
-
+           getProjectsObjects();
 
         return view;
     }
@@ -114,6 +118,13 @@ public class ListOfProjects extends ListFragment {
 
         } else {
         }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+
     }
 
     @Override
@@ -146,16 +157,22 @@ public class ListOfProjects extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        projects = new ArrayList<Project>();
-        getProjectsObjects();
 
-        myProjectAdapter = new MyProjectAdapter(getActivity(), projects);
-        setListAdapter(myProjectAdapter);
+        projects = new ArrayList<Project>();
+
+
 
 
     }
 
-    private void getProjectsObjects() {
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Intent i=new Intent(getActivity(), Project_Description.class);
+        i.putExtra("pojo",projects.get(position));
+        startActivity(i);
+    }
+
+    private boolean getProjectsObjects() {
         /*(String[] projectname = {"java project", "Php project", "html project", "css project"};
         String[] P_by = {"prayhm", "Raj", "mahesh", "hasid"};*/
 
@@ -164,6 +181,10 @@ public class ListOfProjects extends ListFragment {
             @Override
             public void onResponse(JSONObject response) {
                 if (parsejason(response)) {
+                    myProjectAdapter = new MyProjectAdapter(getActivity(), projects);
+                    setListAdapter(myProjectAdapter);
+
+
                     Toast.makeText(getActivity(), "Everything went fine", Toast.LENGTH_LONG).show();
                 }
 
@@ -175,8 +196,11 @@ public class ListOfProjects extends ListFragment {
             }
         });
         requestQueue.add(projectRequest);
-
-
+if(projects!=null)
+{
+    return true;
+}
+return false;
     }
 
     private boolean parsejason(JSONObject response) {
@@ -218,6 +242,11 @@ public class ListOfProjects extends ListFragment {
                             p.setProject_name(pname);
 
                         }
+                        if (project.has(KEY_PROJECT_DESCRIPTION)) {
+                            String pdesc = project.getString(KEY_PROJECT_DESCRIPTION);
+                            p.setProject_description(pdesc);
+
+                        }
                         if (project.has(KEY_TEAM_ID)) {
                             String team = project.getString(KEY_TEAM_ID);
                             p.setTeam_id(team);
@@ -230,7 +259,7 @@ public class ListOfProjects extends ListFragment {
                         if (project.has(KEY_START_DATE)) {
                             String dob = project.getString(KEY_START_DATE);
 
-                            Date d = null;
+                          /*  Date d = null;
                             if (dob != null && dob.equals("null")) {
 
                                 try {
@@ -240,12 +269,12 @@ public class ListOfProjects extends ListFragment {
                                     d = null;
                                 }
                             }
-
-                            p.setStart_date(d);
+*/
+                            p.setStart_date(dob);
                         }
                         if (project.has(KEY_END_DATE)) {
                             String dob = project.getString(KEY_END_DATE);
-
+/*
                             Date d = null;
                             if (dob != null && dob.equals("null")) {
 
@@ -256,15 +285,19 @@ public class ListOfProjects extends ListFragment {
                                     d = null;
                                 }
                             }
-
-                            p.setStart_date(d);
+*/
+                            p.setStart_date(dob);
                         }
 
 
                         isValid = true;
-                        projects.add(j++,p);
+                        projects.add(p);
 
 
+                    }
+                    for (int i=0;i<projects.size();i++)
+                    {
+                      L.t(getActivity(),""+ projects.get(i).getProject_name());
                     }
 
                 }
@@ -299,12 +332,15 @@ public class ListOfProjects extends ListFragment {
             this.context = context;
             this.projects = projects;
 
+            L.t(getActivity(),"in the constructor");
+
 
         }
 
 
         @Override
         public int getCount() {
+L.t(getActivity(),projects.size()+"");
             return projects.size();
         }
 
@@ -322,21 +358,18 @@ public class ListOfProjects extends ListFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
+
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.projectlistitem, null);
-
-
-
                 pro_name = (TextView) convertView.findViewById(R.id.project_name);
-               pro_by = (TextView) convertView.findViewById(R.id.project_by);
-
-
+                pro_by = (TextView) convertView.findViewById(R.id.project_by);
             }
             Project currentProject = projects.get(position);
             if (currentProject != null) {
                 // get the TextView from the ViewHolder and then set the text (item name) and tag (item ID) values
                pro_name.setText(currentProject.getProject_name());
+
                 pro_by.setText(currentProject.getU_id());
             }
 

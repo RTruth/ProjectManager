@@ -1,18 +1,29 @@
 package com.edu.prathm.mybim.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Prathm on 8/11/2015.
  */
-public class Project {
+public class Project implements Serializable {
     String project_name;
     String project_owner;
     String p_id;
+    String project_description;
     String team_id;
-    Date start_date;
-   Date end_date;
+    String start_date;
+   String end_date;
     String u_id;
+
+    public String getProject_description() {
+        return project_description;
+    }
+
+    public void setProject_description(String project_description) {
+        this.project_description = project_description;
+    }
+
     public String getP_id() {
         return p_id;
     }
@@ -27,21 +38,21 @@ public class Project {
         return team_id;
     }
 
-    public Date getStart_date() {
+    public String getStart_date() {
         return start_date;
     }
 
-    public Date getEnd_date() {
+    public String getEnd_date() {
         return end_date;
     }
     public String getU_id(){return u_id; }
     public void setU_id(String u_id)
     {this.u_id=u_id;}
 
-    public void setStart_date(Date start_date) {
+    public void setStart_date(String start_date) {
         this.start_date =start_date;
     }
-    public void setEnd_date(Date end_date) {
+    public void setEnd_date(String end_date) {
         this.end_date =end_date;
     }
 

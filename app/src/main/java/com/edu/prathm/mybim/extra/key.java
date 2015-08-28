@@ -29,6 +29,7 @@ public interface key {
     public static final String KEY_START_DATE = "start_date";
     public static final String KEY_END_DATE = "end_date";
     public static final String KEY_PROJECT_OWNER = "project_owner";
+    public static final String KEY_PROJECT_DESCRIPTION = "project_description";
 
 
 

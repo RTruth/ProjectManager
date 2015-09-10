@@ -15,7 +15,7 @@ public interface key {
     public static final String KEY_USER_GENDER = "gender";
     public static final String KEY_USER_DATE_OF_BIRTH = "dob";
     public static final String KEY_USER_LOCATION = "location";
-    public static final String KEY_USER_PROFILE_IMAGE = "profileImage";
+    public static final String KEY_USER_PROFILE_IMAGE = "url";
     public static final String KEY_SUCCESS = "success";
     public static final String KEY_TRUE = "true";
     public static final String KEY_FALSE = "false";
@@ -30,6 +30,8 @@ public interface key {
     public static final String KEY_END_DATE = "end_date";
     public static final String KEY_PROJECT_OWNER = "project_owner";
     public static final String KEY_PROJECT_DESCRIPTION = "project_description";
+    public static final String KEY_LOCAL_PIC_PATH = "pic_path";
+
 
 
 

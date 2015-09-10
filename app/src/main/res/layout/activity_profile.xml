@@ -25,19 +25,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".4"
+
                 android:background="@drawable/profile_back"
 
                 >
+                <FrameLayout
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="16dp"
+
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/profile_img"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+
+                        android:src="@drawable/avatar" />
+                    </FrameLayout>
+
+
 
                 <ImageView
-                    android:id="@+id/profile_img"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="16dp"
-                    android:paddingBottom="8dp"
-                    android:src="@drawable/avatar" />
+                    android:id="@+id/edit"
 
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="72dp"
+                    android:paddingBottom="8dp"
+
+                    android:src="@drawable/ic_mode_edit_black_18dp" />
 
             </RelativeLayout>
 

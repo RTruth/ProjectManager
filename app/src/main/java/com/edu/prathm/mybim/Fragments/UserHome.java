@@ -1,11 +1,14 @@
 package com.edu.prathm.mybim.Fragments;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,6 +23,7 @@ import com.edu.prathm.mybim.Activities.SplashActivity;
 import com.edu.prathm.mybim.R;
 
 import android.support.v4.app.Fragment;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -28,7 +32,17 @@ import android.widget.Toast;
 import static com.edu.prathm.mybim.extra.FileOperator.getEntryOfSharedPreference;
 import static com.edu.prathm.mybim.extra.key.*;
 
-public class UserHome extends Fragment {
+public class UserHome extends Fragment implements AbsListView.OnScrollListener{
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int i) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView absListView, int i, int i2, int i3) {
+
+    }
+
     OnUpdateProfileListner updateProfileListner;
     ImageButton profileButton;
     TextView name2, date_place;
@@ -54,7 +68,7 @@ Button commentButton;
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_user_home, container, false);
-        name2 = (TextView) v.findViewById(R.id.name2);
+   /*     name2 = (TextView) v.findViewById(R.id.name2);
         date_place = (TextView) v.findViewById(R.id.date_place);
 
 commentButton = (Button) v.findViewById(R.id.commentButton);
@@ -77,7 +91,18 @@ commentButton = (Button) v.findViewById(R.id.commentButton);
                 startActivity(new Intent(getActivity(), CommentActivity.class));
             }
         });
+*/
         return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+      FragmentManager childFragmentManager=getChildFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction=childFragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.childFragment,new ProjectPost());
+        fragmentTransaction.commit();
+
     }
 
     @Override

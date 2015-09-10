@@ -185,7 +185,7 @@ public class ListOfProjects extends ListFragment {
                     setListAdapter(myProjectAdapter);
 
 
-                    Toast.makeText(getActivity(), "Everything went fine", Toast.LENGTH_LONG).show();
+
                 }
 
             }
@@ -207,6 +207,10 @@ return false;
         boolean isValid = false;
         int j=0;
         try {
+            if(response==null||response.length()==0)
+            {
+                return  isValid;
+            }
             //String user = response.getString("user");
             String success = "false";
             if (response.has(KEY_SUCCESS)) {
@@ -216,7 +220,7 @@ return false;
                 L.t(getActivity(), "No Projects");
 
             } else if (success.equals(KEY_TRUE)) {
-                L.t(getActivity(), "projects present");
+                
 
 
                 if (response.has(KEY_PROJECTS)) {
@@ -295,10 +299,7 @@ return false;
 
 
                     }
-                    for (int i=0;i<projects.size();i++)
-                    {
-                      L.t(getActivity(),""+ projects.get(i).getProject_name());
-                    }
+
 
                 }
             }
@@ -332,7 +333,7 @@ return false;
             this.context = context;
             this.projects = projects;
 
-            L.t(getActivity(),"in the constructor");
+
 
 
         }
@@ -340,7 +341,7 @@ return false;
 
         @Override
         public int getCount() {
-L.t(getActivity(),projects.size()+"");
+
             return projects.size();
         }
 

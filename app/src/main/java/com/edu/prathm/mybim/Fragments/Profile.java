@@ -5,8 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,17 +20,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.edu.prathm.mybim.Activities.ProfileActivity;
 import com.edu.prathm.mybim.Activities.ProjectDetails;
 import com.edu.prathm.mybim.R;
+import com.edu.prathm.mybim.extra.FileOperator;
 import com.edu.prathm.mybim.extra.L;
+
+import java.io.File;
 
 import static com.edu.prathm.mybim.extra.key.*;
 
 public class Profile extends Fragment {
     OnUpdateProfileListner updateProfileListner;
+    ImageView profile,avatar;
     private ImageButton profileButton;
     private TextView name2, date_place, name, profile_id, profile_dept, profile_desn, profile_date;
 
@@ -66,6 +76,8 @@ public class Profile extends Fragment {
         profile_dept = (TextView) v.findViewById(R.id.profile_dept);
         profile_desn = (TextView) v.findViewById(R.id.profile_desn);
         profile_date = (TextView) v.findViewById(R.id.profile_date);
+        profile= (ImageView) v.findViewById(R.id.profile_img);
+        avatar= (ImageView) v.findViewById(R.id.pro_img);
 
 
         SharedPreferences sharedpreferences = getActivity().getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
@@ -91,6 +103,22 @@ public class Profile extends Fragment {
         return v;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(FileOperator.getEntryOfSharedPreference(getActivity(),KEY_LOCAL_PIC_PATH)!=null)
+        {
+
+
+
+            Bitmap bmImg = BitmapFactory.decodeFile(FileOperator.getEntryOfSharedPreference(getActivity(),KEY_LOCAL_PIC_PATH));
+            if(bmImg!=null)
+            {
+                profile.setImageBitmap(bmImg);
+                avatar.setImageBitmap(bmImg);
+            }
+        }
+    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

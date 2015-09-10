@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NoConnectionError;
@@ -28,6 +29,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.edu.prathm.mybim.R;
 import com.edu.prathm.mybim.extra.L;
+import com.edu.prathm.mybim.network.ConnectionDetector;
 import com.edu.prathm.mybim.network.VollySingleton;
 import com.edu.prathm.mybim.pojo.User;
 import com.google.android.gms.games.internal.api.RequestsImpl;
@@ -78,7 +80,18 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                processData();
+                ConnectionDetector detector=new ConnectionDetector(Login.this);
+
+                    if(detector.isConnectingToInternet())
+                    {
+                        processData();
+                    }
+                else
+                    {
+                        L.t(Login.this,"No Internet Connectivity!");
+                    }
+
+
             }
         });
 

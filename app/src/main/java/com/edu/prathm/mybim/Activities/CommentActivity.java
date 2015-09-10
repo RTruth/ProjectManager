@@ -2,6 +2,7 @@ package com.edu.prathm.mybim.Activities;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,11 +26,15 @@ import com.edu.prathm.mybim.pojo.Comment;
 import com.edu.prathm.mybim.pojo.Project;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class CommentActivity extends AppCompatActivity {
 MyCommentAdapter myCommentAdapter;
     ListView listView;
     Button addButton;
+    HashSet<String> commentSet;
     EditText getCommText;
 ExpandableListView expcomments;
     ArrayList<Comment> comments;
@@ -40,6 +45,7 @@ ExpandableListView expcomments;
         setContentView(R.layout.activity_commnt);
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+     commentSet=new HashSet<>();
 
 expcomments= (ExpandableListView) findViewById(R.id.elist);
       // listView = (ListView) findViewById(R.id.list);
@@ -63,7 +69,17 @@ expcomments= (ExpandableListView) findViewById(R.id.elist);
             }
         });
         comments = new ArrayList<Comment>();
+        SharedPreferences sharedpreferences = this.getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
+        int count_of_comments = sharedpreferences.getInt("count_of_comments",0);
+        for (int i=0;i<=count_of_comments;i++)
+        {
+          HashSet<String> comm= (HashSet<String>) sharedpreferences.getStringSet("comments"+i,null);
+            Iterator iterator=comm.iterator();
+           while (iterator.hasNext())
+           {
 
+           }
+        }
 
         myCommentAdapter = new MyCommentAdapter(getBaseContext(),comments);
 
@@ -75,10 +91,37 @@ expcomments= (ExpandableListView) findViewById(R.id.elist);
         c.setComment(comm);
         c.setDatetime(date);
         c.setName(name);
+
+        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt("count_of_comments",addEnterSharedPreference(c));
+
         comments.add(c);
 
 
+
     }
+    int count=0;
+    private  int addEnterSharedPreference(Comment c)
+    {int id=1;
+
+      commentSet.add(c.getId()+"");
+        commentSet.add(c.getComment());
+        commentSet.add(c.getDatetime());
+        commentSet.add(c.getName());
+        commentSet.add(c.getImageUrl());
+
+        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putStringSet("comment"+id,commentSet);
+
+        editor.apply();
+        ++count;
+        ++id;
+return  count;
+
+    }
+
 
 
     @Override

@@ -63,64 +63,27 @@ expcomments= (ExpandableListView) findViewById(R.id.elist);
                 }
                 else
                 {Comment c=new Comment();
-                    addComment(c,id,commentS,"date is default","name of person commented");
+                    addComment(id,commentS,"date is default","name of person commented");
                     ++id;
                 }
             }
         });
         comments = new ArrayList<Comment>();
-        SharedPreferences sharedpreferences = this.getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
-        int count_of_comments = sharedpreferences.getInt("count_of_comments",0);
-        for (int i=0;i<=count_of_comments;i++)
-        {
-          HashSet<String> comm= (HashSet<String>) sharedpreferences.getStringSet("comments"+i,null);
-            Iterator iterator=comm.iterator();
-           while (iterator.hasNext())
-           {
 
-           }
-        }
 
         myCommentAdapter = new MyCommentAdapter(getBaseContext(),comments);
 
         expcomments.setAdapter(myCommentAdapter);
     }
-    private  void addComment(Comment c,int id,String comm,String date,String name)
+    private  void addComment(int id,String comm,String date,String name)
     {
-        c.setId(id);
-        c.setComment(comm);
-        c.setDatetime(date);
-        c.setName(name);
 
-        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putInt("count_of_comments",addEnterSharedPreference(c));
-
-        comments.add(c);
 
 
 
     }
-    int count=0;
-    private  int addEnterSharedPreference(Comment c)
-    {int id=1;
 
-      commentSet.add(c.getId()+"");
-        commentSet.add(c.getComment());
-        commentSet.add(c.getDatetime());
-        commentSet.add(c.getName());
-        commentSet.add(c.getImageUrl());
 
-        SharedPreferences sharedpreferences = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putStringSet("comment"+id,commentSet);
-
-        editor.apply();
-        ++count;
-        ++id;
-return  count;
-
-    }
 
 
 

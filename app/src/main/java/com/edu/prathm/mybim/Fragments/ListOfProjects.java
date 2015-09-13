@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
@@ -12,6 +13,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,6 +49,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import static com.edu.prathm.mybim.URL.Get_Project_URL;
 import static com.edu.prathm.mybim.URL.LOGIN_URL;
@@ -76,11 +80,12 @@ import static com.edu.prathm.mybim.extra.key.KEY_USER_ROLE;
 import static com.edu.prathm.mybim.extra.key.KEY_U_ID;
 
 
-public class ListOfProjects extends ListFragment {
+public class ListOfProjects extends ListFragment implements SearchView.OnQueryTextListener {
     ArrayList<Project> projects;
     private RequestQueue requestQueue;
     MyProjectAdapter myProjectAdapter;
     private Toolbar toolbar;
+    String mCurFilter;
 
 
     public ListOfProjects() {
@@ -105,7 +110,7 @@ public class ListOfProjects extends ListFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_of_projects, container, false);
         requestQueue = VollySingleton.getInstance().getRequestQueue();
-           getProjectsObjects();
+        getProjectsObjects();
 
         return view;
     }
@@ -139,6 +144,7 @@ public class ListOfProjects extends ListFragment {
         searchView = (SearchView) MenuItemCompat.getActionView(searchToolbarItem);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(this);
     }
 
     @Override
@@ -161,14 +167,12 @@ public class ListOfProjects extends ListFragment {
         projects = new ArrayList<Project>();
 
 
-
-
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        Intent i=new Intent(getActivity(), Project_Description.class);
-        i.putExtra("pojo",projects.get(position));
+        Intent i = new Intent(getActivity(), Project_Description.class);
+        i.putExtra("pojo", projects.get(position));
         startActivity(i);
     }
 
@@ -180,13 +184,8 @@ public class ListOfProjects extends ListFragment {
                 getRequestUrl(getEntryOfSharedPreference(getActivity(), KEY_USER_ID)), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                if (parsejason(response)) {
-                    myProjectAdapter = new MyProjectAdapter(getActivity(), projects);
-                    setListAdapter(myProjectAdapter);
+                new ParseMyJason().execute(response);
 
-
-
-                }
 
             }
         }, new Response.ErrorListener() {
@@ -196,36 +195,154 @@ public class ListOfProjects extends ListFragment {
             }
         });
         requestQueue.add(projectRequest);
-if(projects!=null)
-{
-    return true;
-}
-return false;
+        if (projects != null) {
+            return true;
+        }
+        return false;
     }
 
-    private boolean parsejason(JSONObject response) {
-        boolean isValid = false;
-        int j=0;
-        try {
-            if(response==null||response.length()==0)
+
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+
+        mCurFilter = !TextUtils.isEmpty(newText) ? newText : "";
+
+       // getLoaderManager().restartLoader(0, null, this);
+
+        myProjectAdapter.filter(mCurFilter);
+        return true;
+    }
+
+
+// TODO: Rename method, update argument and hook method into UI event
+
+
+    class MyProjectAdapter extends BaseAdapter {
+        List<Project> projects;
+        ArrayList<Project> projectTemp;
+        Context context;
+        ViewHolder viewHolder;
+        public class ViewHolder
+        {
+            TextView pro_name;
+            TextView pro_by;
+        }
+
+
+        public MyProjectAdapter(Context context, List<Project> projects) {
+            this.context = context;
+            this.projects = projects;
+projectTemp=new ArrayList<>();
+            projectTemp.addAll(projects);
+
+        }
+
+
+        @Override
+        public int getCount() {
+
+            return projects.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            //Toast.makeText(getActivity(),"*********",Toast.LENGTH_LONG).show();
+            return projects.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.projectlistitem, null);
+                viewHolder=new ViewHolder();
+
+                viewHolder.pro_name = (TextView) convertView.findViewById(R.id.project_name);
+                viewHolder.pro_by = (TextView) convertView.findViewById(R.id.project_by);
+                convertView.setTag(viewHolder);
+            }
+            else
             {
-                return  isValid;
+               viewHolder= (ViewHolder) convertView.getTag();
+            }
+            Project currentProject = projects.get(position);
+            if (currentProject != null) {
+                // get the TextView from the ViewHolder and then set the text (item name) and tag (item ID) values
+                viewHolder.pro_name.setText(currentProject.getProject_name());
+
+                viewHolder.pro_by.setText(currentProject.getU_id());
+            }
+
+
+            return convertView;
+        }
+        public  void filter(String charText) {
+            if(charText!=null)
+            charText = charText.toLowerCase(Locale.getDefault());
+            projects.clear();
+            if (charText.length() == 0) {
+                projects.addAll(projectTemp);
+            }
+            else
+            {
+                for (Project p : projectTemp)
+                {
+                    if (p.getProject_name().toLowerCase(Locale.getDefault()).contains(charText))
+                    {
+                       projects.add(p);
+                    }
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+    }
+class ParseMyJason extends AsyncTask<JSONObject,Void,Boolean>
+{
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        if(aBoolean)
+        {
+        myProjectAdapter = new MyProjectAdapter(getActivity(), projects);
+        setListAdapter(myProjectAdapter);
+    }
+    }
+
+    @Override
+    protected Boolean doInBackground(JSONObject... jsonObjects) {
+        boolean isValid = false;
+        int j = 0;
+        try {
+            if (jsonObjects[0] == null || jsonObjects[0].length() == 0) {
+                return isValid;
             }
             //String user = response.getString("user");
             String success = "false";
-            if (response.has(KEY_SUCCESS)) {
-                success = response.getString(KEY_SUCCESS);
+            if (jsonObjects[0].has(KEY_SUCCESS)) {
+                success = jsonObjects[0].getString(KEY_SUCCESS);
             }
             if (success.equals(KEY_FALSE)) {
                 L.t(getActivity(), "No Projects");
 
             } else if (success.equals(KEY_TRUE)) {
-                
 
 
-                if (response.has(KEY_PROJECTS)) {
+                if (jsonObjects[0].has(KEY_PROJECTS)) {
 
-                    JSONArray ProjArray = response.getJSONArray(KEY_PROJECTS);
+                    JSONArray ProjArray = jsonObjects[0].getJSONArray(KEY_PROJECTS);
                     for (int i = 0; i < ProjArray.length(); i++) {
                         JSONObject project = ProjArray.getJSONObject(i);
 
@@ -312,72 +429,8 @@ return false;
         }
 
         return isValid;
+
     }
-
-
-// TODO: Rename method, update argument and hook method into UI event
-
-
-    class MyProjectAdapter extends BaseAdapter {
-        ArrayList<Project> projects;
-        Context context;
-
-
-            TextView pro_name;
-            TextView pro_by;
-
-
-
-
-        public MyProjectAdapter(Context context, ArrayList<Project> projects) {
-            this.context = context;
-            this.projects = projects;
-
-
-
-
-        }
-
-
-        @Override
-        public int getCount() {
-
-            return projects.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            //Toast.makeText(getActivity(),"*********",Toast.LENGTH_LONG).show();
-            return projects.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-
-            if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.projectlistitem, null);
-                pro_name = (TextView) convertView.findViewById(R.id.project_name);
-                pro_by = (TextView) convertView.findViewById(R.id.project_by);
-            }
-            Project currentProject = projects.get(position);
-            if (currentProject != null) {
-                // get the TextView from the ViewHolder and then set the text (item name) and tag (item ID) values
-               pro_name.setText(currentProject.getProject_name());
-
-                pro_by.setText(currentProject.getU_id());
-            }
-
-
-            return convertView;
-        }
-    }
-
+}
 
 }

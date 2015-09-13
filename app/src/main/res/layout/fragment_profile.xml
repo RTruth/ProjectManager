@@ -22,6 +22,7 @@
                 android:id="@+id/profile_img"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
+                android:scaleType="fitXY"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
                 android:paddingBottom="8dp"
@@ -185,6 +186,7 @@
                 >
 
                 <ImageView
+                    android:scaleType="fitXY"
                     android:id="@+id/pro_img"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -207,10 +209,10 @@
                         android:textColor="@color/secondary_text" />
 
                     <TextView
-                        android:id="@+id/date_place"
+                        android:id="@+id/place"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10 min - London"
+                        android:text="London"
                         android:textColor="@color/secondary_text" />
 
                 </LinearLayout>
@@ -250,6 +252,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:scaleType="fitXY"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/line" />

@@ -143,10 +143,27 @@ public class ProfileActivity extends AppCompatActivity {
                 Bitmap myImg = BitmapFactory.decodeFile(picturePath);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 // Must compress the Image to reduce image size to make upload easy
-                myImg.compress(Bitmap.CompressFormat.PNG, 50, stream);
+                myImg.compress(Bitmap.CompressFormat.JPEG,50, stream);
                 byte[] byte_arr = stream.toByteArray();
                 // Encode Image to String
-                encodedString = Base64.encodeToString(byte_arr, 0);
+                String temp=null;
+                try{
+                    System.gc();
+                    temp = Base64.encodeToString(byte_arr, Base64.DEFAULT);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }catch (OutOfMemoryError outOfMemoryError)
+                {
+                    stream=new  ByteArrayOutputStream();
+                    myImg.compress(Bitmap.CompressFormat.JPEG,25, stream);
+                    byte_arr=stream.toByteArray();
+                    temp=Base64.encodeToString(byte_arr, Base64.DEFAULT);
+                    Log.e("EWN", "Out of memory error catched");
+                }
+                encodedString=temp;
+
                 ConnectionDetector detector=new ConnectionDetector(ProfileActivity.this);
                 if(detector.isConnectingToInternet())
                 {
